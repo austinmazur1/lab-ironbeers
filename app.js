@@ -6,6 +6,7 @@ const PunkAPIWrapper = require('punkapi-javascript-wrapper');
 
 const app = express();
 const punkAPI = new PunkAPIWrapper();
+// const randomBeer = punkAPI.getRandom();
 
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
@@ -17,7 +18,7 @@ app.use(express.static('images'));
 
 // ...
 
-// Add the route handlers shere:s
+// Add the route handlers here:
 
 //home handler
 app.get('/', (req, res) => {
@@ -25,13 +26,17 @@ app.get('/', (req, res) => {
 });
 
 //beers page handler
+//call back func is async
 app.get('/beers', async (req, res) => {
   
   try{
+    //recieve a promise, so we need to use await
     const response = await fetch('https://api.punkapi.com/v2/beers');
+    //gives us a json object
     const beers = await response.json();
+    //renders the page, calling the beers object
     res.render('beers', {beers});
-    console.log(beers);
+    // console.log(beers);
   }
   catch (err) {
     console.log(err);
@@ -39,59 +44,28 @@ app.get('/beers', async (req, res) => {
   }
 });
 
-// const beers = fetch("https://api.punkapi.com/v2/beers")
-// punkAPI.getBeers()
-// .then((res) => {
-//   console.log(res);
-// })
-// .catch((err) => {
-//   console.log(err);
-// })
-
-
-  // const beers1 = punkAPI
-  // .getBeers({'abv_gt': 8})
-  // .then(beersFromApi => console.log('Beers from the database: ', beersFromApi))
-  // .catch(error => console.log(error));
-  // const data = {
-  //   beers: beers
-  // }
-  // res.render('beers', getData);
-  // console.log("The data is.......");
-
-  // punkAPI.getBeers('burger')
-  // .then((beerArr) => {
-  //   const data = {
-  //     beers: beerArr
-  //   }
-  //   res.render('beers', data);
-  //   console.log("data");
-  // })
-  // .catch(err => console.log('error'));
-
 //random-beer page handler
-app.get('/random-beer', (req, res) => {
-  res.render('random-beer')
+//same thing, async callback function
+app.get('/random-beer', async (req, res) => {
+
+  try{
+    //await the api data again
+    const response = await fetch('https://api.punkapi.com/v2/beers')
+    await response.json();
+    
+    //create a var of the get random method
+    const randomBeer = await punkAPI.getRandom()
+
+    //render page with the random beer obj
+    res.render('random-beer', {randomBeer});
+    // console.log(randomBeer[0].name);
+  }
+  catch(err){
+    console.log(err);
+    res.render(err)
+  }
 });
 
 
 app.listen(3000, () => console.log('🏃‍ on port 3000'));
 
-// console.log(await punkAPI.getBeers('pizza'));
-
-// const thing = await punkAPI.getBeers('pizza');
-// console.log(thing);
-async function asyncCall() {
-  const thing = await punkAPI.getBeers({'abv_gt': 8});
-  console.log(thing);
-}
-
-// asyncCall()
-
-
-// async function strongBeer () {
-//   const strongBeers = await punkAPI.getBeers({'id: 8'})
-//   console.log(strongBeers);
-// }
-
-// strongBeer();

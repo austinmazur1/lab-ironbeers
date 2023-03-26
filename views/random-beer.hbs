@@ -1,1 +1,26 @@
 <h2>Random Beer</h2>
+
+{{#each randomBeer}}
+
+{{#if image_url}}
+    <img src="{{image_url}}" alt="{{name}}">
+{{else}}
+    <p>Sorry no image available</p>
+{{/if}}
+
+<h3>{{name}}</h3>
+<p>{{tagline}}</p>
+<p>{{description}}</p>
+
+<h5>Pairs well with:</h5>
+
+<ul>
+{{#each food_pairing}}
+    <li>{{this}}</li>
+{{/each}}
+</ul>
+
+<h5>Brewers Tips:</h5>
+<p>{{brewers_tips}}</p>
+
+{{/each}}
