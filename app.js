@@ -25,17 +25,49 @@ app.get('/', (req, res) => {
 });
 
 //beers page handler
-app.get('/beers', (req, res) => {
-  punkAPI.getBeers('burger')
-  .then((beerArr) => {
-    const data = {
-      beers: beerArr
-    }
-    res.render('beers', data);
-    console.log("data");
-  })
-  .catch(err => console.log('error'));
+app.get('/beers', async (req, res) => {
+  
+  try{
+    const response = await fetch('https://api.punkapi.com/v2/beers');
+    const beers = await response.json();
+    res.render('beers', {beers});
+    console.log(beers);
+  }
+  catch (err) {
+    console.log(err);
+    res.render('error')
+  }
 });
+
+// const beers = fetch("https://api.punkapi.com/v2/beers")
+// punkAPI.getBeers()
+// .then((res) => {
+//   console.log(res);
+// })
+// .catch((err) => {
+//   console.log(err);
+// })
+
+
+  // const beers1 = punkAPI
+  // .getBeers({'abv_gt': 8})
+  // .then(beersFromApi => console.log('Beers from the database: ', beersFromApi))
+  // .catch(error => console.log(error));
+  // const data = {
+  //   beers: beers
+  // }
+  // res.render('beers', getData);
+  // console.log("The data is.......");
+
+  // punkAPI.getBeers('burger')
+  // .then((beerArr) => {
+  //   const data = {
+  //     beers: beerArr
+  //   }
+  //   res.render('beers', data);
+  //   console.log("data");
+  // })
+  // .catch(err => console.log('error'));
 
 //random-beer page handler
 app.get('/random-beer', (req, res) => {
@@ -54,4 +86,12 @@ async function asyncCall() {
   console.log(thing);
 }
 
-asyncCall()
+// asyncCall()
+
+
+// async function strongBeer () {
+//   const strongBeers = await punkAPI.getBeers({'id: 8'})
+//   console.log(strongBeers);
+// }
+
+// strongBeer();

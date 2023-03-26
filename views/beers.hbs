@@ -1,4 +1,24 @@
-<h2>beers</h2>
-<h1>hi</h1>
-<p>This is beers templates</p>
-{{beers[0]}}
+<h2>Beers!</h2>
+{{!-- {{beers}} --}}
+<ul>
+{{#each beers}}
+<li><strong>{{name}}</strong>
+    <em>{{tagline}}</em>
+
+    {{#if description}}
+    <p>{{description}}</p>
+    {{else}}
+    <p>Sorry, no information available</p>
+    {{/if}}
+
+    {{#if image_url}}
+    <img src="{{image_url}}" alt="{{name}}">
+    {{else}}
+    <p>Sorry no image available</p>
+    {{/if}}
+
+</li>
+{{else}}
+<p>Nothing found</p>
+{{/each}}
+</ul>
